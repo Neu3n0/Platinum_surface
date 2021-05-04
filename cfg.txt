@@ -1,0 +1,7 @@
+total_mol_N2
+total_at_Pt
+T
+p
+dt
+spacesize
+cellsize

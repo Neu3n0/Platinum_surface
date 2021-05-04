@@ -1,0 +1,3 @@
+Program calculation time: 8.778943333333332 h
+Program calculation time: 31604196 ms
+С 90000 шага началось уменьшение колебаний 
