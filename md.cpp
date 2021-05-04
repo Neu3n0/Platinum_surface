@@ -392,7 +392,7 @@ double Rms_Vel(const Space& space) {
 	return res;
 }
 
-int VTK_num = 1000;
+int VTK_num = 0;
 //VTK
 int WriteVTK(Space* space)
 {

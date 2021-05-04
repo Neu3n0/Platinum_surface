@@ -25,7 +25,7 @@ int main() {
 	/**********************************************************************************************/
 
 	auto start = steady_clock::now();
-	for (int step = 100000; step < amount_steps + 100000; ++step) {
+	for (int step = 0; step < amount_steps; ++step) {
 		if (step % 100 == 0) {
 			auto tmp = steady_clock::now();
 			std::cout << step << '\t' << duration_cast<milliseconds>(tmp - start).count() / 1000 << std::endl;
