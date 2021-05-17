@@ -18,6 +18,8 @@ int main() {
 	Fout.open("C:\\Drive\\Code\\MolDynamics\\md_v1.4\\Output\\Full_energy.dat", std::ios::app);
 	std::ofstream Rout;
 	Rout.open("C:\\Drive\\Code\\MolDynamics\\md_v1.4\\Output\\Rms_vel.dat", std::ios::app);
+	std::ofstream Aout;
+	Aout.open("C:\\Drive\\Code\\MolDynamics\\md_v1.4\\Output\\Avel.dat", std::ios::app);
 	std::ofstream Tout;
 	Tout.open("C:\\Drive\\Code\\MolDynamics\\md_v1.4\\Output\\Temp.dat", std::ios::app);
 	std::ofstream fouten;
@@ -31,7 +33,9 @@ int main() {
 			std::cout << step << '\t' << duration_cast<milliseconds>(tmp - start).count() / 1000 << std::endl;
 		}
 		space->MDStep();
-		Get_energy(fouten, *space, Kout, Pout, Fout, Rout, Tout, step);		
+		if (step % 100 == 0) {
+			Get_energy(fouten, *space, Kout, Pout, Fout, Rout, Tout, Aout, step);
+		}		
 		if (step % 100 == 0) {
 			WriteVTK(space);
 		}
@@ -47,6 +51,7 @@ int main() {
 	Fout.close();
 	Rout.close();
 	Tout.close();
+	Aout.close();
 
 	delete space;
 	_CrtDumpMemoryLeaks();

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <chrono>
 #include <assert.h>
+#include <vector>
 #pragma warning (disable : 4996)
 ////////////////////Memory Leaks/////////////////////////
 #define _CRTDBG_MAP_ALLOC
@@ -41,11 +42,13 @@ const double B = 6 * 4 * pow(sigma, 6) * eps;
 const double AA = 4 * pow(sigma, 12) * eps;					
 const double BB = 4 * pow(sigma, 6) * eps;					
 
+//Поменять)))))
 const double k_N = 326;                           //Stretch constant
 const double r0 = 1.4;                            //Equilibrium length
 
 
 // g++ main.cpp md.cpp md.h header.h -o main
+// g++ main.cpp md.cpp md.h header.h -O3 -o main
 
 // 1.5301 * 2.64^6 * 10^-2
 

@@ -85,6 +85,9 @@ void Space::Init_space() {
 			}
 		}
 	}
+
+	//Calibratiom of speeds
+	Calibration_vel(this);
 }
 
 void Space::MDStep() {
@@ -297,7 +300,7 @@ double Kin_En(Space* space, Atom* mol) {
 	return mol->m * (pow(mol->vel[0], 2) + pow(mol->vel[1], 2) + pow(mol->vel[2], 2)) / 2;
 }
 
-void Get_energy(std::ofstream& fouten, const Space& space, std::ofstream& Kout, std::ofstream& Pout, std::ofstream& Fout, std::ofstream& Rout, std::ofstream& Tout, const int& step) {
+void Get_energy(std::ofstream& fouten, const Space& space, std::ofstream& Kout, std::ofstream& Pout, std::ofstream& Fout, std::ofstream& Rout, std::ofstream& Tout, std::ofstream& Aout, const int& step) {
 	fouten << "Full energy = " << space.Energy << "\t" << "Kinetic energy = " 
 		<< space.Kin_En << "\t" << "Potential energy = " << space.Pot_En << "\n";
 	Kout << step << "\t" <<  space.Kin_En << endl;
@@ -305,6 +308,8 @@ void Get_energy(std::ofstream& fouten, const Space& space, std::ofstream& Kout, 
 	Fout << step << "\t" << space.Energy << endl;
 	Tout << step << "\t" << space.T << endl;
 	Rout << step << "\t" << Rms_Vel(space) << endl;
+	vector<double> av_vel = Aver_Vel(space);
+	Aout << step << " " << av_vel[0] << " " << av_vel[1] << " " << av_vel[2] << " " << endl;
 }
 
 void Print_atoms(const Space& space) {
@@ -390,6 +395,46 @@ double Rms_Vel(const Space& space) {
 	double res = 0;
 	res = sqrt(3 * K_b * space.T / space.m_Pt);
 	return res;
+}
+
+vector<double> Aver_Vel(const Space& space) {
+	double v1 = 0;
+	double v2 = 0;
+	double v3 = 0;
+	for (int i = 0; i < space.amount_cells; ++i) {
+		for (int j = 0; j < space.amount_cells; ++j) {
+			for (int k = 0; k < space.amount_cells; ++k) {
+				for (int l = 0; l < space.cells[i][j][k].amount_atoms; ++l) {
+					Atom* at = space.cells[i][j][k].atoms[l];
+					v1 += at->vel[0];
+					v2 += at->vel[1];
+					v3 += at->vel[2];
+				}
+			}
+		}
+	}
+	vector<double> av_vel;
+	av_vel.push_back(v1 / (space.total_at_Pt + space.total_mol_N2));
+	av_vel.push_back(v2 / (space.total_at_Pt + space.total_mol_N2));
+	av_vel.push_back(v3 / (space.total_at_Pt + space.total_mol_N2));
+	return av_vel;
+}
+
+void Calibration_vel(Space* space) { 
+	Atom* atom;
+	vector<double> avg_vel = Aver_Vel(*space);
+	for (int i = 0; i < space->amount_cells; ++i) {
+		for (int j = 0; j < space->amount_cells; ++j) {
+			for (int k = 0; k < space->amount_cells; ++k) {
+				for (int l = 0; l < space->cells[i][j][k].amount_atoms; ++l) {
+					atom = space->cells[i][j][k].atoms[l];
+					for (int m = 0; m < 3; ++m) {
+						atom->vel[m] -= avg_vel[m];
+					}
+				}
+			}
+		}
+	}
 }
 
 int VTK_num = 0;

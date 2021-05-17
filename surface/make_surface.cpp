@@ -24,6 +24,7 @@ double RandG() {
 
 int main() {
     double temp = 0;
+    srand(time(nullptr));
     cout << "enter temp: \n";
     cin >> temp;
     double a;
@@ -82,13 +83,14 @@ int main() {
     
     double m_Pt = 3.24e-5;
     const double K_b = 0.00138;
-    double betta = sqrt(m_Pt / K_b / temp);
+    double betta = sqrt(m_Pt / K_b / temp / 2.0);
     for (auto x : coord) {
         for (int i = 0; i < 3; ++i) {
             fout << x[i] << " ";
         }
         for (int j = 0; j < 3; ++j) {
-            fout << RandG() / betta << " ";
+            double new_vel = RandG() / betta;
+            fout << new_vel << " ";
         }
         fout << endl;
     }

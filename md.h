@@ -65,7 +65,9 @@ double KX_P(const double& r);		//KX potential
 double KX_F(const double& r);		//KX power
 void SetNullMacro(Space* space);		//Set null macro
 int WriteVTK(Space* space);		//VTK
-void Get_energy(std::ofstream& fouten, const Space& space, std::ofstream& Kout, std::ofstream& Pout, std::ofstream& Fout, std::ofstream& Rout, std::ofstream& Tout, const int& step);		//Get energy
+void Get_energy(std::ofstream& fouten, const Space& space, std::ofstream& Kout, std::ofstream& Pout, std::ofstream& Fout, std::ofstream& Rout, std::ofstream& Tout, std::ofstream& Aout, const int& step);		//Get energy
 double Kin_En(Space* space, Atom* mol);		//Kinetic energy 
 double Temp(Space& space);
 double Rms_Vel(const Space& space);
+vector<double> Aver_Vel(const Space& space);
+void Calibration_vel(Space* space);
